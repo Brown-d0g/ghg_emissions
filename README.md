@@ -36,4 +36,4 @@ I included some notes with my data visualization, but you need not be so exhaust
 
 # Rubric
 
-You will be assessed on whether you created a web-hosted (completion) with partial credit eligibility for having code or other progress on each sub-step.  Out of 200 points.
+You will be assessed on whether you created a web-hosted visualization with partial credit eligibility for having code or other progress on each sub-step.  Out of 200 points.
