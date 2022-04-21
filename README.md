@@ -16,14 +16,14 @@ Find a data set. I like FEC data, but you don't have to use that.
 
 Create a visualization.  I recommend the following sub-steps:
 
-## Step 4.1
+### Step 4.1
 
 Select and use a data structure to read the data
 
-## Step 4.2
+### Step 4.2
 
 Convert the data structure to a data frame.
 
-## Step 4.3
+### Step 4.3
 
 Use Seaborn to make a data visualization.  To use Seaborn on your personal computer, run "pip install seaborn" at command line.
