@@ -1,9 +1,0 @@
-Data from:
-
-https://www.fec.gov/data/receipts/individual-contributions/?two_year_transaction_period=2016&recipient_committee_type=P&min_amount=2700&max_amount=2700
-
-https://www.fec.gov/data/receipts/individual-contributions/?two_year_transaction_period=2020&recipient_committee_type=P&min_amount=2800&max_amount=2800
-
-These files were to large to upload to Github, so splits.py is a splitting/joining utility to ease webhosting.
-
-2700 and 2800 were the FEC contribution limits in 2016 and 2020 presidential cycles.
