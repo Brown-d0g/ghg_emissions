@@ -1,4 +1,4 @@
-This repository is a sample project for CS 241.
+This repository is a sample project for CS 241.  The page is here: https://cd-public.github.io/fec_project/
 
 # Step 1
 
