@@ -80,16 +80,12 @@ def heat():
 
 	df = pandas.DataFrame.from_dict(getd())
 	
-	mako = seaborn.color_palette("mako", as_cmap=True)
 	plt.rcParams['figure.figsize'] = [10, 10]
 	plt.rcParams['figure.dpi'] = 100
 	plt.tick_params(axis='both', which='major', labelsize=10, labelbottom = False, bottom=False, top = False, left = False, labeltop=True)
 	plt.style.use("dark_background")
 	
-	p = seaborn.heatmap(df, cmap=mako)
-	p.xaxis.label.set_color('purple')
-	p.yaxis.label.set_color('silver')
-	f = p.get_figure()
-	f.savefig("heat.png",bbox_inches='tight',transparent=True)
+	p = seaborn.heatmap(df, cmap=seaborn.color_palette("mako", as_cmap=True))
+	p.get_figure().savefig("heat.png",bbox_inches='tight',transparent=True)
 	
 heat()

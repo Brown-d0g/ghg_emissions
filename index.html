@@ -60,7 +60,7 @@
     }
 </style>
 	
-<h1 id="preamble">Data Structures for Data Analysis by Calvin</h1>
+<h1 id="preamble">Data Structures for Data Analysis for Data Visualization</h1>
 
 <p>I wanted to analyze data on election donations in the 2016 and 2020 presidential cycles to find how donors shifted between candidates in those two cycles. To do so, I looked at all cases in which there was a maximum individual donation under the same name in 2016 and 2020 and then plotting them in a heatmap.</p>
 
@@ -143,9 +143,9 @@ def insert(data, tree, func, year):
 
 <p>Here I swapped from lists to tuples for internal data as I would be adding these all to dictionaries shortly which would latter be converted to dataframes for the heatmap. Since lists cannot be hashed and therefore cannot be added to dictionaries, but these internal data will no longer be altered, this was the first use of an appropriate Python type other than a list to store data.</p>
 
-<h2 >The Dictionary</h2>
+<h2 >The Analysis</h2>
 
-I needed to move my tree into a data frame, and to do so thought it best to translate through a dictionary in two dimensions indexed by donees capturing donor frequency for the donee pair. To see how many Trump->Biden donors for example I would then check <code>d["TRUMP"]["BIDEN"]</code>. Once I had the dictionary in hand, I would shift over to using data visualization libraries. So in all, this code goes csv->bst->list->dictionary. I found I also had to take the log of the log of the frequencies using <code>bit_length</code> because of strong herding effects around winning nominees making movement between primary candidates almost immeasurably small, especially at the point of visualization.
+To look over the data I thought it best to translate to a dictionary in two dimensions indexed by donees capturing donor frequency for the donee pair. To see how many Trump->Biden donors for example I would then check <code>d["TRUMP"]["BIDEN"]</code>. So in all, this code goes csv->bst->list->dictionary. I found I also had to take the log of the log of the frequencies using <code>bit_length</code> because of strong herding effects around winning nominees making movement between primary candidates almost immeasurably small, especially at the point of visualization.
 
 <pre><code># csv -> bst
 csvs = ["2016_2700s.csv","2020_2800s.csv"]
@@ -163,6 +163,39 @@ d[donr[0]][donr[1]] += 1 # compute frequencies
 
 # frequency -> log of log of frequency
 d = { s : { t : d[s][t].bit_length().bit_length() for t in twnt } for s in sxtn }</pre></code>
+
+<h3 >The Visualization</h3>
+
+I don't really know how Seaborn works, so I just ran it without default settings and looked up things that annoyed me. I wanted a transparent background and nice color theme in the graph to display with the website HTML theme, had to make it high resolution so I could read the (many) labels, and copied a script from Stack Overflow that manipulated tick marks to move labels from the bottom to the top of the x axis. Otherwise, I simply ran a heatmap over the dictionary and presented what I found!
+
+<pre><code>import pandas
+import seaborn
+import matplotlib.pyplot as plt
+
+df = pandas.DataFrame.from_dict(getd())
+
+plt.rcParams['figure.figsize'] = [10, 10]
+plt.rcParams['figure.dpi'] = 100
+plt.tick_params(axis='both', which='major', labelsize=10, labelbottom = False, 
+                bottom=False, top = False, left = False, labeltop=True)
+plt.style.use("dark_background")
+
+p = seaborn.heatmap(df, cmap=seaborn.color_palette("mako", as_cmap=True))
+p.get_figure().savefig("heat.png",bbox_inches='tight',transparent=True)</pre></code>
+
+I'm pleased with how it turned out, and offer a few thoughts.
+
+<ul>
+  <li>I was wondering who donated to Amy Klobuchar. I wish her name were listed, and I'm pretty sure she's Amy, but think transparency could be improved in this reporting.</li>
+  <li>WIN THE ERA is particularly egregious, and apparently associated with Pete Buttigieg.</li>
+  <li>Amy's non-Hillary donors seem to mostly be from Kasich and Donald J Trump.</li>
+</ul>
+
+It would be interesting to look at relative rather than absolute donor counts, and look at dollars rather than maximum individual donors, and do some comparison between parties, but I'm happy with how my graph turned out!
+
+<center>
+  <pre><code><img src="heat.png" height=640px></pre></code>
+</center>
 
 </body>
 </html>
