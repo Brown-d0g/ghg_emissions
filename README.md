@@ -1,4 +1,6 @@
-This repository is a sample project for CS 241.  The page is here: https://cd-public.github.io/fec_project/
+For your final project, web-host a data visualization created using a data structure (or not, but probably using one).
+
+This repository is a sample project for CS 241.  The corresponding page is here: https://cd-public.github.io/fec_project/
 
 # Step 1
 
