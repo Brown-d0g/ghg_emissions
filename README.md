@@ -1,3 +1,5 @@
+This repository is a sample project for CS 241.
+
 # Step 1
 
 Make a Github repository for your project. https://docs.github.com/en/get-started/quickstart/create-a-repo
@@ -27,3 +29,9 @@ Convert the data structure to a data frame.
 ### Step 4.3
 
 Use Seaborn to make a data visualization.  To use Seaborn on your personal computer, run "pip install seaborn" at command line.
+
+I included some notes with my data visualization, but you need not be so exhaustive.
+
+# Rubric
+
+You will be assessed on whether you created a web-hosted (completion) with partial credit eligibility for having code or other progress on each sub-step.  Out of 200 points.
