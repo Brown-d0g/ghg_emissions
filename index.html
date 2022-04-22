@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-
+<meta property="og:image" content="heat_final.png" />
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -65,7 +65,7 @@
 <p>I wanted to analyze data on election donations in the 2016 and 2020 presidential cycles to find how donors shifted between candidates in those two cycles. To do so, I looked at all cases in which there was a maximum individual donation under the same name in 2016 and 2020 and then plotting them in a heatmap.</p>
 
 <center>
-  <pre><code><img src="heat.png" height=640px></pre></code>
+  <pre><code><img src="heat_final.png" height=640px></pre></code>
 </center>
 
 <h2 >The Data</h2>
@@ -181,7 +181,7 @@ plt.tick_params(axis='both', which='major', labelsize=10, labelbottom = False,
 plt.style.use("dark_background")
 
 p = seaborn.heatmap(df, cmap=seaborn.color_palette("mako", as_cmap=True))
-p.get_figure().savefig("heat.png",bbox_inches='tight',transparent=True)</pre></code>
+p.get_figure().savefig("heat_final.png",bbox_inches='tight',transparent=True)</pre></code>
 
 I'm pleased with how it turned out, and offer a few thoughts.
 
@@ -194,7 +194,7 @@ I'm pleased with how it turned out, and offer a few thoughts.
 It would be interesting to look at relative rather than absolute donor counts, and look at dollars rather than maximum individual donors, and do some comparison between parties, but I'm happy with how my graph turned out!
 
 <center>
-  <pre><code><img src="heat.png" height=640px></pre></code>
+  <pre><code><img src="heat_final.png" height=640px></pre></code>
 </center>
 
 </body>
