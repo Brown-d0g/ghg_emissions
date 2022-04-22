@@ -130,7 +130,7 @@ def insert(data, tree, func, year):
 	# add key to tree
 		tree.extend([[],[], key, [{val},set()]])</code></pre>
 		
-<p>I stored the subtrees first to allow for boolean indexing and separated donees by year to track cycle-to-cycle changes. I had not original planned to track multiple donees per year, but when working over the data found it to be quite common for a donor to donate to multiple donees per cycle and wanted to capture this phenomenon.</p>
+<p>I stored the subtrees first to allow for boolean indexing and separated donees by year to track cycle-to-cycle changes. I had not originally planned to track multiple donees per year, but when working over the data found it to be quite common for a donor to donate to multiple donees per cycle and wanted to capture this phenomenon.</p>
 
 <p>I did need to be able to flatten the tree back into a list, so I used a simple recursive utility to do so.</p>
 
@@ -141,11 +141,11 @@ def insert(data, tree, func, year):
 		return tolist(tree[0]) + l + tolist(tree[1])
 	return []</pre></code>
 
-<p>Here I swapped from lists to tuples for internal data as I would be adding these all to dictionaries shortly which would latter be converted to dataframes for the heatmap. Since lists cannot be hashed and therefore cannot be added to dictionaries, but these internal data will no longer be altered, this was the first use of an appropriate Python type other than a list to store data.</p>
+<p>Here I swapped from lists to tuples for internal data (cross cycle donee pairs) as I wanted to be able to make sets of these pairs during debug. Since lists cannot be hashed and therefore cannot be added to Python set, this was the first use of an appropriate Python type other than a list to store data, and provides coverage over the list-tuple-set triad.</p>
 
 <h2 >The Analysis</h2>
 
-To look over the data I thought it best to translate to a dictionary in two dimensions indexed by donees capturing donor frequency for the donee pair. To see how many Trump->Biden donors for example I would then check <code>d["TRUMP"]["BIDEN"]</code>. So in all, this code goes csv->bst->list->dictionary. I found I also had to take the log of the log of the frequencies using <code>bit_length</code> because of strong herding effects around winning nominees making movement between primary candidates almost immeasurably small, especially at the point of visualization.
+To look over the data I thought it best to encode in a dictionary of two dimensions indexed by donees capturing donor frequency for the donee pair. To see how many 2016.Trump->20202.Biden donors for example I would then check <code>d["TRUMP"]["BIDEN"]</code>. So in all, my code goes csv->bst->list->dictionary. I found I also had to take the log of the log of the frequencies using <code>bit_length</code> because of strong herding effects around winning nominees making movement between primary candidates almost immeasurably small, especially at the point of visualization.
 
 <pre><code># csv -> bst
 csvs = ["2016_2700s.csv","2020_2800s.csv"]
@@ -188,7 +188,7 @@ I'm pleased with how it turned out, and offer a few thoughts.
 <ul>
   <li>I was wondering who donated to Amy Klobuchar. I wish her name were listed, and I'm pretty sure she's Amy, but think transparency could be improved in this reporting.</li>
   <li>WIN THE ERA is particularly egregious, and apparently associated with Pete Buttigieg.</li>
-  <li>Amy's non-Hillary donors seem to mostly be from Kasich and Donald J Trump.</li>
+  <li>Amy's donors in 2016, other than Hillary of course, mostly supported Kasich and Donald J Trump.</li>
 </ul>
 
 It would be interesting to look at relative rather than absolute donor counts, and look at dollars rather than maximum individual donors, and do some comparison between parties, but I'm happy with how my graph turned out!
