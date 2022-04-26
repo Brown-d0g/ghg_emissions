@@ -69,6 +69,18 @@ def getd():
 	d = { s : { t : d[s][t].bit_length().bit_length() for t in twnt } for s in sxtn }
 			
 	return d
+	
+def fixd():
+	d = getd()
+	# 20s candidates donor counts
+	twnt = { i : sum([d[o][i] for o in d]) for i in d[next(iter(d))] }
+	# sort by count
+	twnt = [y[0] for y in sorted(twnt.items(), key = lambda x : x[1])[::-1]]
+	# sort/arrange the inner dicts of the original dict
+	sxtn = { o : { twnt[i] : d[o][twnt[i]] for i in range(len(twnt)) } for o in d }
+	#print(list((sxtn.items())[1])
+	sxtn = dict(sorted(list(sxtn.items()), key = lambda x : sum(x[1].values()))[::-1])
+	return sxtn
 
 # we need a few imports to make the map
 
@@ -78,7 +90,7 @@ import matplotlib.pyplot as plt
 
 def heat():
 
-	df = pandas.DataFrame.from_dict(getd())
+	df = pandas.DataFrame.from_dict(fixd())
 	
 	plt.rcParams['figure.figsize'] = [10, 10]
 	plt.rcParams['figure.dpi'] = 100
