@@ -168,14 +168,16 @@ d = { s : { t : d[s][t].bit_length().bit_length() for t in twnt } for s in sxtn 
 
 Once I had these dictionaries on hand, a few shortcomings emerged. First, the data was not sorted in anyway. Bernie has far more in common with Hillary and Trump than with Santorum and McAfee visually, mainly due to the sheer quantity of donors. So I ordered donees along both axis by number of donors. This also showed some trailing candidates only shared donors with eventual nominees. I choose to take these candidates, such as McMullin, out of the dataset.
 
-<pre><code># filter 20s candidates who only received co-donations with nominees
-innr = [i for i in d[next(iter(d))] if sum([d[o][i] for o in d if o not in ["HILLARY", "DONALD J TRUMP"]])]
+<pre><code>noms = ["HILLARY", "DONALD J TRUMP", "BIDEN"]
+
+# filter 20s candidates who only received co-donations with nominees
+innr = [i for i in d[next(iter(d))] if sum([d[o][i] for o in d if o not in noms])]
 
 # rank 20s candidates donor counts
 innr = sorted(innr, key = lambda i : sum([d[o][i] for o in d]))[::-1]
 
 # filter 16s candidates who only received co-donations with nominees
-outr = [o for o in d if sum([d[o][i] for i in innr if i not in ["BIDEN", "DONALD J TRUMP"]])]# ])]
+outr = [o for o in d if sum([d[o][i] for i in innr if i not in noms])]
 
 # sort inner and outer dictionaries
 d = { o : { innr[i] : d[o][innr[i]] for i in range(len(innr)) } for o in outr }

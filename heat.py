@@ -72,12 +72,13 @@ def getd():
 	
 def fixd():
 	d = getd()
+	noms = ["HILLARY", "DONALD J TRUMP", "BIDEN"]
 	# filter 20s candidates who only received co-donations with nominees
-	innr = [i for i in d[next(iter(d))] if sum([d[o][i] for o in d if o not in ["HILLARY", "DONALD J TRUMP"]])]
+	innr = [i for i in d[next(iter(d))] if sum([d[o][i] for o in d if o not in noms])]
 	# rank 20s candidates donor counts
 	innr = sorted(innr, key = lambda i : sum([d[o][i] for o in d]))[::-1]
 	# filter 16s candidates who only received co-donations with nominees
-	outr = [o for o in d if sum([d[o][i] for i in innr if i not in ["BIDEN", "DONALD J TRUMP"]])]# ])]
+	outr = [o for o in d if sum([d[o][i] for i in innr if i not in noms])]
 	# sort/arrange the inner dicts of the original dict
 	d = { o : { innr[i] : d[o][innr[i]] for i in range(len(innr)) } for o in outr }
 	d = dict(sorted(list(d.items()), key = lambda x : sum(x[1].values()))[::-1])
