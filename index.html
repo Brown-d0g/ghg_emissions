@@ -161,7 +161,7 @@ dnrs = [donr for donr in tolist(tree) if all(donr)] # ensure donations both cycl
 sxtn, twnt = set([donr[0] for donr in dnrs]), set([donr[1] for donr in dnrs])
 d = { s : { t : 0 for t in twnt } for s in sxtn } # init to zero
 for donr in dnrs:
-d[donr[0]][donr[1]] += 1 # compute frequencies 
+	d[donr[0]][donr[1]] += 1 # compute frequencies 
 
 # frequency -> log of log of frequency
 d = { s : { t : d[s][t].bit_length().bit_length() for t in twnt } for s in sxtn }</pre></code>
