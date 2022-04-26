@@ -83,6 +83,13 @@ def fixd():
 	d = { o : { innr[i] : d[o][innr[i]] for i in range(len(innr)) } for o in outr }
 	d = dict(sorted(list(d.items()), key = lambda x : sum(x[1].values()))[::-1])
 	return d
+	
+def savd():
+	d = fixd()
+	f = open("heat.csv","w")
+	f.write("," + ",".join([key for key in d[next(iter(d))]]) + "\n")
+	[f.write(innr + "," + ",".join([str(val) for val in d[innr].values()])+ "\n")  for innr in d]
+	
 
 # we need a few imports to make the map
 
@@ -102,4 +109,4 @@ def heat():
 	p = seaborn.heatmap(df, cmap=seaborn.color_palette("mako", as_cmap=True))
 	p.get_figure().savefig("heat.png",bbox_inches='tight',transparent=True)
 	
-heat()
+savd()
