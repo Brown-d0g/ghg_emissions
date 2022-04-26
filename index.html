@@ -64,8 +64,10 @@
 
 <p>I wanted to analyze data on election donations in the 2016 and 2020 presidential cycles to find how donors shifted between candidates in those two cycles. To do so, I looked at all cases in which there was a maximum individual donation under the same name in 2016 and 2020 and then plotting them in a heatmap.</p>
 
+<p>See the source code <a href="https://github.com/cd-public/fec_project">here</a> and learn more about me, the author, <a href="https://cd-public.github.io/">here</a>.</p>
+
 <center>
-  <pre><code><img src="heat_final.png" height=640px></pre></code>
+<img src="heat.png" height=640px>
 </center>
 
 <h2 >The Data</h2>
@@ -145,7 +147,7 @@ def insert(data, tree, func, year):
 
 <h2 >The Analysis</h2>
 
-To look over the data I thought it best to encode in a dictionary of two dimensions indexed by donees capturing donor frequency for the donee pair. To see how many 2016.Trump->20202.Biden donors for example I would then check <code>d["TRUMP"]["BIDEN"]</code>. So in all, my code goes csv->bst->list->dictionary. I found I also had to take the log of the log of the frequencies using <code>bit_length</code> because of strong herding effects around winning nominees making movement between primary candidates almost immeasurably small, especially at the point of visualization.
+To look over the data I thought it best to encode in a dictionary of two dimensions indexed by donees capturing donor frequency for the donee pair. To see how many 2016.Trump->2020.Biden donors for example I would then check <code>d["TRUMP"]["BIDEN"]</code>. So in all, my code goes csv->bst->list->dictionary. I found I also had to take the log of the log of the frequencies using <code>bit_length</code> because of strong herding effects around winning nominees making movement between primary candidates almost immeasurably small, especially at the point of visualization.
 
 <pre><code># csv -> bst
 csvs = ["2016_2700s.csv","2020_2800s.csv"]
@@ -163,6 +165,21 @@ d[donr[0]][donr[1]] += 1 # compute frequencies
 
 # frequency -> log of log of frequency
 d = { s : { t : d[s][t].bit_length().bit_length() for t in twnt } for s in sxtn }</pre></code>
+
+Once I had these dictionaries on hand, a few shortcomings emerged. First, the data was not sorted in anyway. Bernie has far more in common with Hillary and Trump than with Santorum and McAfee visually, mainly due to the sheer quantity of donors. So I ordered donees along both axis by number of donors. This also showed some trailing candidates only shared donors with eventual nominees. I choose to take these candidates, such as McMullin, out of the dataset.
+
+<pre><code># filter 20s candidates who only received co-donations with nominees
+innr = [i for i in d[next(iter(d))] if sum([d[o][i] for o in d if o not in ["HILLARY", "DONALD J TRUMP"]])]
+
+# rank 20s candidates donor counts
+innr = sorted(innr, key = lambda i : sum([d[o][i] for o in d]))[::-1]
+
+# filter 16s candidates who only received co-donations with nominees
+outr = [o for o in d if sum([d[o][i] for i in innr if i not in ["BIDEN", "DONALD J TRUMP"]])]# ])]
+
+# sort inner and outer dictionaries
+d = { o : { innr[i] : d[o][innr[i]] for i in range(len(innr)) } for o in outr }
+d = dict(sorted(list(d.items()), key = lambda x : sum(x[1].values()))[::-1])</pre></code>
 
 <h2 >The Visualization</h2>
 
@@ -183,18 +200,10 @@ plt.style.use("dark_background")
 p = seaborn.heatmap(df, cmap=seaborn.color_palette("mako", as_cmap=True))
 p.get_figure().savefig("heat_final.png",bbox_inches='tight',transparent=True)</pre></code>
 
-I'm pleased with how it turned out, and offer a few thoughts.
-
-<ul>
-  <li>I was wondering who donated to Amy Klobuchar. I wish her name were listed, and I'm pretty sure she's Amy, but think transparency could be improved in this reporting.</li>
-  <li>WIN THE ERA is particularly egregious, and apparently associated with Pete Buttigieg.</li>
-  <li>Amy's donors in 2016, other than Hillary of course, mostly supported Kasich and Donald J Trump.</li>
-</ul>
-
-It would be interesting to look at relative rather than absolute donor counts, and look at dollars rather than maximum individual donors, and do some comparison between parties, but I'm happy with how my graph turned out!
+<p>I did touch up a bit with Glimpse at the end. I converted the black font via color exchange to match the HTML text color, and placed the image on a black background for distribution outside of the host page. I also clipped the tick marks from the legend as they were unhelpfully quantitative.</p><br><br>
 
 <center>
-  <pre><code><img src="heat_final.png" height=640px></pre></code>
+<img src="heat.png" height=640px>
 </center>
 
 </body>

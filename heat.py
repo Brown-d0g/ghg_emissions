@@ -46,7 +46,7 @@ def get_kv(l):
 					val = val[:val.find(f)]
 			for r in ["FRIENDS OF", "COMMITTEE", "TO ELECT", "INC", "CAMPAIGN"]:
 				val = val.replace(r,"")
-			val.strip()
+			val = val.strip()
 			return key, val
 
 # make the dictionary
@@ -72,15 +72,16 @@ def getd():
 	
 def fixd():
 	d = getd()
-	# 20s candidates donor counts
-	twnt = { i : sum([d[o][i] for o in d]) for i in d[next(iter(d))] }
-	# sort by count
-	twnt = [y[0] for y in sorted(twnt.items(), key = lambda x : x[1])[::-1]]
+	# filter 20s candidates who only received co-donations with nominees
+	innr = [i for i in d[next(iter(d))] if sum([d[o][i] for o in d if o not in ["HILLARY", "DONALD J TRUMP"]])]
+	# rank 20s candidates donor counts
+	innr = sorted(innr, key = lambda i : sum([d[o][i] for o in d]))[::-1]
+	# filter 16s candidates who only received co-donations with nominees
+	outr = [o for o in d if sum([d[o][i] for i in innr if i not in ["BIDEN", "DONALD J TRUMP"]])]# ])]
 	# sort/arrange the inner dicts of the original dict
-	sxtn = { o : { twnt[i] : d[o][twnt[i]] for i in range(len(twnt)) } for o in d }
-	#print(list((sxtn.items())[1])
-	sxtn = dict(sorted(list(sxtn.items()), key = lambda x : sum(x[1].values()))[::-1])
-	return sxtn
+	d = { o : { innr[i] : d[o][innr[i]] for i in range(len(innr)) } for o in outr }
+	d = dict(sorted(list(d.items()), key = lambda x : sum(x[1].values()))[::-1])
+	return d
 
 # we need a few imports to make the map
 
